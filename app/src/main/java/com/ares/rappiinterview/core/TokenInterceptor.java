@@ -50,8 +50,7 @@ public class TokenInterceptor implements Interceptor {
             String responseBody;
 
             // Save token of this request for future
-            //TODO Man, create all info that we will need in Session Manager
-            String token = "";/*sessionManager.getUserToken;*/
+            String token = sessionManager.getUserToken();
 
             //if unauthorized
             Gson gson = new GsonBuilder().create();
@@ -68,8 +67,7 @@ public class TokenInterceptor implements Interceptor {
             }
 
             if(baseResponse != null && baseResponse.getCode() == Constants.API_BODY_ERROR_CODE_INVALID_TOKEN){
-                // TODO Armando Session Manager
-                String currentToken = ""; /*sessionManager.getUserToken();*/
+                String currentToken = sessionManager.getUserToken();
 
                 // Compare current token with token that was stored before, if it was not updated -do update
                 if(currentToken != null && currentToken.equals(token)){
@@ -82,8 +80,7 @@ public class TokenInterceptor implements Interceptor {
                     }
                 }
 
-                //TODO Armando
-                String newToken = "";/*sessionManager.getUserToken();*/
+                String newToken = sessionManager.getUserToken();
 
                 // Retry requires new auth token,
                 if (newToken != null && !newToken.equals(currentToken)) {
@@ -116,12 +113,12 @@ public class TokenInterceptor implements Interceptor {
     private boolean refreshToken() throws IOException{
         // Refresh token, synchronously, save it, and return result code
         boolean success = false;
-        String refreshToken = "";/*sessionManager.getRefreshToken();*/
+        String requestToken = sessionManager.getUserToken();
 
-        if (refreshToken != null && !refreshToken.isEmpty()) {
+        if (requestToken != null && !requestToken.isEmpty()) {
             FormBody.Builder formBuilder = new FormBody.Builder()
-                    .add(Constants.API_BODY_KEY_GRANT_TYPE, GrantType.REFRESH_TOKEN)
-                    .add(Constants.API_BODY_KEY_REFRESH_TOKEN, refreshToken);
+                    .add(Constants.API_BODY_KEY_GRANT_TYPE, GrantType.REQUEST_TOKEN)
+                    .add(Constants.API_BODY_KEY_REFRESH_TOKEN, requestToken);
 
             Request request = new Request.Builder()
                     .url(Constants.API_URL + "/request_token")
@@ -151,8 +148,7 @@ public class TokenInterceptor implements Interceptor {
                 final String request_token = tokenResponse.getRequest_token();
 
                 // Store new access token
-                // TODO Armando
-                //sessionManager.setUserToken(request_token);
+                sessionManager.setUserToken(request_token);
 
                 success = true;
             }

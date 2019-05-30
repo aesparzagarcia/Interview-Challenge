@@ -26,4 +26,12 @@ public class Constants {
     public static final String API_BODY_KEY_GRANT_TYPE = "grant_type";
     public static final String API_BODY_KEY_REFRESH_TOKEN = "refresh_token";
     public static final int API_BODY_ERROR_CODE_INVALID_TOKEN = 10;
+
+    //Preferences
+    public static final String PREFERENCES_USER_TOKEN = "pref:user:token";
+    public static final String PREFERENCES_USER_ACCESS_TOKEN = "pref:user:access:token";
+    public static final String PREFERENCES_USER_REFRESH_TOKEN = "pref:user:refresh:token";
+    public static final String PREFERENCES_POPULAR_MOVIE_LIST = "pref:movie:popular:list";
+    public static final String PREFERENCES_TOP_RATED_MOVIE_LIST = "pref:movie:top:list";
+    public static final String PREFERENCES_UP_COMING_MOVIE_LIST = "pref:movie:coming:list";
 }

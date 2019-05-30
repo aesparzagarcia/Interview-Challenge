@@ -1,6 +1,7 @@
 package com.ares.rappiinterview.section.main;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,17 +14,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.ares.rappiinterview.R;
+import com.ares.rappiinterview.RappiApp;
 import com.ares.rappiinterview.data.model.Movie;
 import com.ares.rappiinterview.databinding.FragmentMainBinding;
 import com.ares.rappiinterview.utils.Utils;
-
-import java.util.List;
 
 /**
  * Created by ares on 2019-05-28
@@ -35,6 +34,7 @@ public class MainFragment extends Fragment implements iMovieClickListener {
     private FragmentMainBinding fragmentMainBinding;
     private boolean isLoading = true;
     private Utils utils;
+    private RappiApp rappiApp;
 
     @Nullable
     @Override
@@ -43,6 +43,7 @@ public class MainFragment extends Fragment implements iMovieClickListener {
 
         model = ViewModelProviders.of(this).get(MainViewModel.class);
         utils = new Utils(getContext());
+        rappiApp = (RappiApp) getActivity().getApplication();
 
         setTitle();
 
@@ -51,21 +52,29 @@ public class MainFragment extends Fragment implements iMovieClickListener {
 
 
         //Ofline mode
-        //if(utils.isOnline())
+        if(utils.isOnline())
             observePopular();
-        //else
-          //  getMoviesOfLine();
+        else
+            getPopularMoviesOfLine();
 
         return fragmentMainBinding.getRoot();
     }
 
-    private void getMoviesOfLine() {
-        model.getAllMovies().observe(this, new Observer<List<Movie.results>>() {
+    private void getPopularMoviesOfLine() {
+        //Save Data in a Database
+        /*model.getAllMovies().observe(this, new Observer<List<Movie.results>>() {
             @Override
             public void onChanged(List<Movie.results> results) {
                 adapter.setMovies(results);
             }
-        });
+        });*/
+        fragmentMainBinding.rvMovies.removeAllViews();
+        isLoading = false;
+        fragmentMainBinding.progressCircular.setVisibility(View.GONE);
+        fragmentMainBinding.rvMovies.setVisibility(View.VISIBLE);
+        adapter = new MoviesAdapter(rappiApp.component().sessionManager().getPopularMovieList(), this, getContext());
+        fragmentMainBinding.rvMovies.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        fragmentMainBinding.rvMovies.setAdapter(adapter);
     }
 
     private void observePopular() {
@@ -73,10 +82,13 @@ public class MainFragment extends Fragment implements iMovieClickListener {
             isLoading = false;
             fragmentMainBinding.progressCircular.setVisibility(View.GONE);
             fragmentMainBinding.rvMovies.setVisibility(View.VISIBLE);
+
             //Ofline mode
+            //rappiApp.component().sessionManager().clearData();
           /*  for(Movie.results results : movie.results){
                 model.insert(results);
             }*/
+            rappiApp.component().sessionManager().setPopularMoviesInfo(movie.results);
             adapter = new MoviesAdapter(movie.results, this, getContext());
             fragmentMainBinding.rvMovies.setLayoutManager(new GridLayoutManager(getContext(), 3));
             fragmentMainBinding.rvMovies.setAdapter(adapter);
@@ -86,18 +98,35 @@ public class MainFragment extends Fragment implements iMovieClickListener {
 
     private void observeTopRated() {
         model.getTopRated(1, getString(R.string.language)).observe(this, movie -> {
+            rappiApp.component().sessionManager().setTopRatedMoviesInfo(movie.results);
             adapter = new MoviesAdapter(movie.results, this, getContext());
             fragmentMainBinding.rvMovies.setLayoutManager(new GridLayoutManager(getContext(), 3));
             fragmentMainBinding.rvMovies.setAdapter(adapter);
         });
     }
 
+    private void getTopRatedOfLine() {
+        fragmentMainBinding.rvMovies.removeAllViews();
+        adapter = new MoviesAdapter(rappiApp.component().sessionManager().getTopRatedMovieList(), this, getContext());
+        fragmentMainBinding.rvMovies.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        fragmentMainBinding.rvMovies.setAdapter(adapter);
+
+    }
+
     private void observeUpComing() {
         model.getUpComing(1, getString(R.string.action_up_coming)).observe(this, movie -> {
+            rappiApp.component().sessionManager().setUpComingMoviesInfo(movie.results);
             adapter = new MoviesAdapter(movie.results, this, getContext());
             fragmentMainBinding.rvMovies.setLayoutManager(new GridLayoutManager(getContext(), 3));
             fragmentMainBinding.rvMovies.setAdapter(adapter);
         });
+    }
+
+    private void getUpComingMoviesOfLine(){
+        fragmentMainBinding.rvMovies.removeAllViews();
+        adapter = new MoviesAdapter(rappiApp.component().sessionManager().getUpComingMovieList(), this, getContext());
+        fragmentMainBinding.rvMovies.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        fragmentMainBinding.rvMovies.setAdapter(adapter);
     }
 
     private void setTitle() {
@@ -117,13 +146,22 @@ public class MainFragment extends Fragment implements iMovieClickListener {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.popular:
-                observePopular();
+                if(utils.isOnline())
+                    observePopular();
+                else
+                    getPopularMoviesOfLine();
                 break;
             case R.id.top_rated:
-                observeTopRated();
+                if(utils.isOnline())
+                    observeTopRated();
+                else
+                    getTopRatedOfLine();
                 break;
             case R.id.up_coming:
-                observeUpComing();
+                if(utils.isOnline())
+                    observeUpComing();
+                else
+                    getUpComingMoviesOfLine();
                 break;
         }
         return super.onOptionsItemSelected(item);

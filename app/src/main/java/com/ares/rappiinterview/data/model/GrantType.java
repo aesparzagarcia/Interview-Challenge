@@ -8,9 +8,9 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * Created by ares on 2019-05-27
  */
-@StringDef({GrantType.PASSWORD, GrantType.REFRESH_TOKEN})
+@StringDef({GrantType.API_KEY, GrantType.REQUEST_TOKEN})
 @Retention(RetentionPolicy.SOURCE)
 public @interface GrantType {
-    String PASSWORD = "password";
-    String REFRESH_TOKEN = "refresh_token";
+    String API_KEY = "api_key";
+    String REQUEST_TOKEN = "request_token";
 }

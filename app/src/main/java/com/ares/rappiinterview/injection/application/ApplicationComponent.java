@@ -1,7 +1,6 @@
 package com.ares.rappiinterview.injection.application;
 
 import com.ares.rappiinterview.RappiApp;
-import com.ares.rappiinterview.core.ScreenManager;
 import com.ares.rappiinterview.core.SessionManager;
 import com.ares.rappiinterview.data.Repository;
 import com.ares.rappiinterview.data.db.MovieRepository;
@@ -23,8 +22,6 @@ public interface ApplicationComponent {
     RappiApp application();
 
     SessionManager sessionManager();
-
-    ScreenManager screenManager();
 
     Repository repository();
 

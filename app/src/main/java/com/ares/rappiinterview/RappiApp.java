@@ -34,4 +34,6 @@ public class RappiApp extends Application {
     public ApplicationComponent component(){
         return component;
     }
+
+
 }

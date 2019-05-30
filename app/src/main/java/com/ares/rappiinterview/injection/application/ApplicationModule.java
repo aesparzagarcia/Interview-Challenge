@@ -2,9 +2,7 @@ package com.ares.rappiinterview.injection.application;
 
 import com.ares.rappiinterview.BuildConfig;
 import com.ares.rappiinterview.RappiApp;
-import com.ares.rappiinterview.core.ScreenManager;
 import com.ares.rappiinterview.core.SessionManager;
-import com.ares.rappiinterview.core.TokenInterceptor;
 import com.ares.rappiinterview.data.DataRepository;
 import com.ares.rappiinterview.data.Repository;
 import com.ares.rappiinterview.data.db.MovieRepository;
@@ -14,6 +12,8 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
+
+import net.grandcentrix.tray.AppPreferences;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -78,13 +78,7 @@ public class ApplicationModule {
     @Provides
     @Singleton
     SessionManager providesSessionManager(){
-        return new SessionManager();
-    }
-
-    @Provides
-    @Singleton
-    ScreenManager providesScreenManager(){
-        return new ScreenManager();
+        return new SessionManager(new AppPreferences(application), application);
     }
 
     @Provides
