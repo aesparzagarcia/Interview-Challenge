@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Rappi Test</string>
+    <string name="action_popular">Popular</string>
+    <string name="action_top_rated">Top Rated</string>
+    <string name="action_up_coming">Up Coming</string>
+    <string name="top_rate">/10</string>
+    <string name="language">en-US</string>
+</resources>

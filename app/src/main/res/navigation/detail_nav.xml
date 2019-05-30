@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detail_nav">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.ares.rappiinterview.section.main.MainFragment"
+        tools:layout="@layout/fragment_main"
+        android:label="fragment_main">
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.ares.rappiinterview.section.details.DetailsFragment"
+        tools:layout="@layout/fragment_movie_details"
+        android:label="fragment_movie_details" />
+</navigation>
