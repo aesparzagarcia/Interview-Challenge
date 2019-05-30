@@ -53,11 +53,11 @@ This flavor points to debug environments
 
 ### Class descrption
 
-* ** Package core
+* **Package core**
 	> SessionManager: Class that handles SharedPreferences
 	> TokenInterceptor: Class that validates the request_token and access_token to get a valid session. (Couldn`t apply this point due to is immposible to give permisions to token and get an access_token from the application thats why I have to use v3 of the API).
 
-* ** Package data
+* **Package data**
 	> db
 		· MovieDao: Data Access Object
 		· MovieDataBase: Maps the info into Database  
@@ -72,7 +72,7 @@ This flavor points to debug environments
 	> Repository: Interface class that has the body of the RepositoryData class.
 	> RestApiservice: Class that has the endpoints with body to call API.
 
-* ** Package Injection		
+* **Package Injection**		
 	> activity
 		·ActivityComponent: Enables ActivityModule that performs dependency injection.
 		·ActivityModule: Defines classes that will be provided to ActivityComponent.
@@ -81,7 +81,7 @@ This flavor points to debug environments
 		·ApplicationComponent: Enables ApplicationModule that performs dependency injection.
 		·ApplicationModule: Define classes that will be provided to ApplicationComponent.
 
-* ** Package section
+* **Package section**
 	> details
 		·DetailsFragment: View of the screen Details of the movie
 		·DetailsViewModel: Manage DetailsFragment UI-related Movie details data in a lifeCycle concius way.
@@ -92,14 +92,16 @@ This flavor points to debug environments
 		·MainViewModel: Manage MainFragment UI-related Movie data in a lifeCycle concius way.
 		·MoviesAdapter: Class that handles info into in item of the list.
 
-* ** Package utils
+* **Package utils**
 	> Constants: Class that handles all application constants.
 	> Utils: Class that has many utility that the app will need like the method that verify if the app has internet.
 
 ### Questions
-* ** Unique responsability: Determines how we should modularise code in OOP.
+* **Unique responsability**
+     > Determines how we should modularise code in OOP.
 	 > Purpose: Develop our app with objects, separeted classes, use polimorfism, abstraction, encapsulation a heritage.
-* ** Clean code: Has clean architecture, good practices like well name defined to classes, methods, functions and variables. Independence of the classes, comments in classes, classes with not to much responsability, short methods, uses design patterns.
+* **Clean code** 
+	> Has clean architecture, good practices like well name defined to classes, methods, functions and variables. Independence of the classes, comments in classes, classes with not to much responsability, short methods, uses design patterns.
 
 
 
